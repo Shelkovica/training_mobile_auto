@@ -10,7 +10,9 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.lang.reflect.Array;
 import java.net.URL;
+import java.util.List;
 
 public class FirstTest {
     private AppiumDriver driver;
@@ -26,7 +28,7 @@ public class FirstTest {
         capabilities.setCapability("automationName","Appium");
         capabilities.setCapability("appPackage","org.wikipedia");
         capabilities.setCapability("appActivity",".main.MainActivity");
-        capabilities.setCapability("app","D:/job/JavaAppiumAutomation/apks/org.wikipedia.apk");
+        capabilities.setCapability("app","C:/vica/job/Новая папка/training_mobile_auto/apks/org.wikipedia.apk");
 
         driver  = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
     }
@@ -133,8 +135,33 @@ public class FirstTest {
 //        );
 //    };
 
+//    @Test
+//    public void testElementText()
+//    {
+//        waitForElementAndClick(
+//                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+//                "Cannot find Search Wikipedia input",
+//                5
+//        );
+//
+//        waitForElementPresent(
+//                By.id("org.wikipedia:id/search_src_text"),
+//                "Cannot find Search Wikipedia input",
+//                15
+//        );
+//        String errorMessage = "Text in element with error";
+//        String resultAssert = assertElementHasText(
+//                By.id("org.wikipedia:id/search_src_text"),
+//                "Search…",
+//                errorMessage
+//
+//        );
+//        Assert.assertEquals(errorMessage, "Ok", resultAssert);
+//    }
+
+
     @Test
-    public void testElementText()
+    public void testSearchCancel()
     {
         waitForElementAndClick(
                 By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
@@ -142,20 +169,41 @@ public class FirstTest {
                 5
         );
 
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search')]"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+
         waitForElementPresent(
-                By.id("org.wikipedia:id/search_src_text"),
-                "Cannot find Search Wikipedia input",
+                By.xpath("//*[contains(@text, 'Java')]"),
+                "Cannot find 'Java'",
                 15
         );
-        String errorMessage = "Text in element with error";
-        String resultAssert = assertElementHasText(
-                By.id("org.wikipedia:id/search_src_text"),
-                "Search…",
-                errorMessage
 
+        List count_article = driver.findElementsById("org.wikipedia:id/page_list_item_title");
+      //  Тут возможно нужно еще проверять, что статьи содержат искомую строку
+
+        Assert.assertTrue("no find article",  count_article.size()>0);
+
+        waitForElementAndClick(By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot find X to cancel search",
+                5
         );
-        Assert.assertEquals(errorMessage, "Ok", resultAssert);
-    }
+        WebElement searchMessage = waitForElementPresent(By.id("org.wikipedia:id/search_empty_message"),
+                "Search is not empty",
+                5
+                );
+
+        String resultAssert = assertElementHasText(
+                By.id("org.wikipedia:id/search_empty_message"),
+                "Search and read the free encyclopedia in your language",
+                "page is not empty"
+        );
+        Assert.assertEquals("page is not empty", "Ok", resultAssert);
+
+    };
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
