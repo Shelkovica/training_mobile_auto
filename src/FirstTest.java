@@ -160,8 +160,54 @@ public class FirstTest {
 //    }
 
 
+//    @Test
+//    public void testSearchCancel()
+//    {
+//        waitForElementAndClick(
+//                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+//                "Cannot find Search Wikipedia input",
+//                5
+//        );
+//
+//        waitForElementAndSendKeys(
+//                By.xpath("//*[contains(@text, 'Search')]"),
+//                "Java",
+//                "Cannot find search input",
+//                5
+//        );
+//
+//        waitForElementPresent(
+//                By.xpath("//*[contains(@text, 'Java')]"),
+//                "Cannot find 'Java'",
+//                15
+//        );
+//
+//        List count_article = driver.findElementsById("org.wikipedia:id/page_list_item_title");
+//      //  Тут возможно нужно еще проверять, что статьи содержат искомую строку
+//
+//        Assert.assertTrue("no find article",  count_article.size()>0);
+//
+//        waitForElementAndClick(By.id("org.wikipedia:id/search_close_btn"),
+//                "Cannot find X to cancel search",
+//                5
+//        );
+//        WebElement searchMessage = waitForElementPresent(By.id("org.wikipedia:id/search_empty_message"),
+//                "Search is not empty",
+//                5
+//                );
+//
+//        String resultAssert = assertElementHasText(
+//                By.id("org.wikipedia:id/search_empty_message"),
+//                "Search and read the free encyclopedia in your language",
+//                "page is not empty"
+//        );
+//        Assert.assertEquals("page is not empty", "Ok", resultAssert);
+//
+//    };
+
+
     @Test
-    public void testSearchCancel()
+    public void testSearchResult()
     {
         waitForElementAndClick(
                 By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
@@ -169,41 +215,30 @@ public class FirstTest {
                 5
         );
 
+        String string_search = "Java";
+
         waitForElementAndSendKeys(
                 By.xpath("//*[contains(@text, 'Search')]"),
-                "Java",
+                string_search,
                 "Cannot find search input",
                 5
         );
 
         waitForElementPresent(
-                By.xpath("//*[contains(@text, 'Java')]"),
-                "Cannot find 'Java'",
+                By.xpath("//*[contains(@text, '"+string_search+"')]"),
+                "Cannot find "+string_search ,
                 15
         );
 
-        List count_article = driver.findElementsById("org.wikipedia:id/page_list_item_title");
-      //  Тут возможно нужно еще проверять, что статьи содержат искомую строку
+        List <WebElement> count_article = driver.findElementsByXPath("//*[@resource-id='org.wikipedia:id/page_list_item_title']");
+        for(WebElement c_article:count_article) {
+            String title_article = c_article.getText();
+            Assert.assertTrue(
+                    "some article in search result not contain "+string_search,
+                    title_article.toLowerCase().contains(string_search.toLowerCase()));
+        }
 
-        Assert.assertTrue("no find article",  count_article.size()>0);
-
-        waitForElementAndClick(By.id("org.wikipedia:id/search_close_btn"),
-                "Cannot find X to cancel search",
-                5
-        );
-        WebElement searchMessage = waitForElementPresent(By.id("org.wikipedia:id/search_empty_message"),
-                "Search is not empty",
-                5
-                );
-
-        String resultAssert = assertElementHasText(
-                By.id("org.wikipedia:id/search_empty_message"),
-                "Search and read the free encyclopedia in your language",
-                "page is not empty"
-        );
-        Assert.assertEquals("page is not empty", "Ok", resultAssert);
-
-    };
+    }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
     {
