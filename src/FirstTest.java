@@ -33,6 +33,7 @@ public class FirstTest {
         capabilities.setCapability("appPackage","org.wikipedia");
         capabilities.setCapability("appActivity",".main.MainActivity");
         capabilities.setCapability("app","C:/vica/job/Новая папка/training_mobile_auto/apks/org.wikipedia.apk");
+        capabilities.setCapability("orientation","PORTRAIT");
 
         driver  = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
     }
@@ -40,7 +41,6 @@ public class FirstTest {
     @After
     public void tearDown()
     {
-        driver.rotate(ScreenOrientation.PORTRAIT);
         driver.quit();
     }
 
@@ -474,15 +474,15 @@ public class FirstTest {
         String title_before_rotation = waitForElementAndGetAttribute(
                 By.id("org.wikipedia:id/view_page_title_text"),
                 "text",
-                "Cannot find title of article",
+                "Cannot find title of article before",
                 15
         );
 
         driver.rotate(ScreenOrientation.LANDSCAPE);
         String title_after_rotation = waitForElementAndGetAttribute(
-                By.id("org.wikipedia:id/view_page_title_text1"),
+                By.id("org.wikipedia:id/view_page_title_text"),
                 "text",
-                "Cannot find title of article",
+                "Cannot find title of article after",
                 15
         );
 
