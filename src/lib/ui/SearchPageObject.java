@@ -5,21 +5,20 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public class SearchPageObject extends MainPageObject{
+abstract public class SearchPageObject extends MainPageObject{
 
-    private static final String
-        SEARCH_INIT_ELEMENT = "xpath://*[contains(@text, 'Search Wikipedia')]",
-        SEARCH_INPUT = "xpath://*[contains(@text, 'Search')]",
-        SEARCH_CANCEL_BUTTON = "id:org.wikipedia:id/search_close_btn",
-        SEARCH_RESULT_BY_SYBSTRING_TPL ="xpath://*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
-        SEARCH_RESULT_ELEMENT = "xpath://*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
-        SEARCH_EMPTY_RESULTS_ELEMENT = "xpath://*[@text='No results found']",
-        SEARCH_INPUT_TEXT_ELEMENT = "id:org.wikipedia:id/search_src_text",
-        SEARCH_INPUT_TEXT = "Search…",
-        SEARCH_RESULT_TITLE_ARTICLE = "id:org.wikipedia:id/page_list_item_title",
+     protected static  String
+        SEARCH_INIT_ELEMENT,
+        SEARCH_INPUT,
+        SEARCH_CANCEL_BUTTON,
+        SEARCH_RESULT_BY_SYBSTRING_TPL,
+        SEARCH_RESULT_ELEMENT,
+        SEARCH_EMPTY_RESULTS_ELEMENT,
+        SEARCH_INPUT_TEXT_ELEMENT,
+        SEARCH_INPUT_TEXT,
+        SEARCH_RESULT_TITLE_ARTICLE,
 
-        SEARCH_EMPTY_ELEMENT = "id:org.wikipedia:id/search_empty_message";
-        //SEARCH_EMPTY_ELEMENT_MESSAGE  = "Search and read the free encyclopedia in your language";
+        SEARCH_EMPTY_ELEMENT;
 
 
     public SearchPageObject(AppiumDriver driver)

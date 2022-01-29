@@ -1,13 +1,15 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 
-public class MyListsPageObjects extends MainPageObject
+abstract public class MyListsPageObjects extends MainPageObject
 {
 
-    public static final String
-        FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDER_NAME}']",
-        ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITLE}']";
+    protected static String
+        FOLDER_BY_NAME_TPL,
+        ARTICLE_BY_TITLE_TPL,
+        INFO_WINDOW_CLOSE;
 
     private static String getFolderXpathByName(String name_of_folder)
     {
@@ -45,6 +47,11 @@ public class MyListsPageObjects extends MainPageObject
         );
     }
 
+    public  void closeInfoWindowInMyList()
+    {
+        this.waitForElementAndClick(INFO_WINDOW_CLOSE, "Cannot find info window", 15);
+    }
+
     public void waitForArticleToDisappearByTitle(String article_title)
     {
         String article_xpath = getSavedArticleXpathByTitle(article_title);
@@ -63,7 +70,9 @@ public class MyListsPageObjects extends MainPageObject
                 article_xpath,
                 "Cannon find saved article"
         );
-
+        if (Platform.getInstance().isIOS()) {
+        this.clickElementToTheRigthUpperCorner(article_xpath, "Cannot fined saved article");
+        }
         this.waitForArticleToDisappearByTitle(article_title);
     }
 }
